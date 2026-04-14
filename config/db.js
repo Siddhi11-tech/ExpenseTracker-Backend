@@ -1,19 +1,24 @@
+console.log("ENV CHECK:", process.env.DB_HOST);
+
+
 const mysql = require("mysql2");
-require("dotenv").config(); // Load environment variables
 
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+// create connection
+const connection = mysql.createConnection({
+  host: "metro.proxy.rlwy.net",
+  port: 28378,
+  user: "root",
+  password: "ZWyelxnkuFZJkYJOImCimPiWJerRGPsB",
+  database: "railway"
 });
 
-db.connect((err) => {
+// connect
+connection.connect((err) => {
   if (err) {
-    console.error(" MySQL Connection Failed:", err);
-  } else {
-    console.log(" MySQL Connected");
+    console.error("❌ Connection failed:", err);
+    return;
   }
+  console.log("✅ Connected to Railway MySQL!");
 });
 
-module.exports = db;
+// test query
