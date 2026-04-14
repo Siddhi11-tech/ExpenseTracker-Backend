@@ -1,24 +1,22 @@
-console.log("ENV CHECK:", process.env.DB_HOST);
-
-
 const mysql = require("mysql2");
 
-// create connection
 const connection = mysql.createConnection({
-  host: "metro.proxy.rlwy.net",
-  port: 28378,
-  user: "root",
-  password: "ZWyelxnkuFZJkYJOImCimPiWJerRGPsB",
-  database: "railway"
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
-// connect
 connection.connect((err) => {
   if (err) {
-    console.error("❌ Connection failed:", err);
-    return;
+    console.error("❌ Database connection failed:", err);
+  } else {
+    console.log("✅ Connected to Railway MySQL!");
   }
-  console.log("✅ Connected to Railway MySQL!");
 });
 
-// test query
+module.exports = connection;

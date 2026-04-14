@@ -1,26 +1,24 @@
-console.log("ENV FILE TEST:", process.env.DB_HOST);
 require("dotenv").config();
-console.log("AFTER DOTENV:", process.env.DB_HOST);
 
-const mysql = require("mysql2");
+const express = require("express");
+const cors = require("cors");
+require("./config/db"); // Import DB connection
 
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  ssl: {
-    rejectUnauthorized: false
-  }
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Test Route
+app.get("/", (req, res) => {
+  res.send("🚀 API Running on Railway!");
 });
 
-connection.connect((err) => {
-  if (err) {
-    console.error("❌ Connection failed:", err);
-  } else {
-    console.log("✅ Connected to Railway MySQL!");
-  }
-});
+// Use Railway's assigned port
+const PORT = process.env.PORT || 5000;
+console.log("ENV CHECK:", process.env.DB_HOST);
 
-module.exports = connection;
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
